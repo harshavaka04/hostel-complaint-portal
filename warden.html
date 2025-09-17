@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Warden Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f9; padding: 20px; }
+        h2 { text-align: center; color: darkblue; }
+        table { width: 95%; margin: auto; border-collapse: collapse; background: white; }
+        th, td { padding: 10px; border: 1px solid #ccc; text-align: center; }
+        th { background: #007BFF; color: white; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        .message { text-align: center; margin-top: 20px; font-size: 18px; color: gray; }
+        .resolved { color: green; font-weight: bold; }
+        .not-resolved { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>🏫 Warden Dashboard</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="message">
+          {% for category, message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% if complaints %}
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Reg No</th>
+            <th>Email</th>
+            <th>Room</th>
+            <th>Block</th>
+            <th>Complaint</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        {% for c in complaints %}
+        <tr>
+            <td>{{ c.Username }}</td>
+            <td>{{ c.RegNo }}</td>
+            <td>{{ c.Email }}</td>
+            <td>{{ c.Room }}</td>
+            <td>{{ c.Block }}</td>
+            <td>{{ c.Complaints }}</td>
+            <td class="{% if c.Status == 'Resolved' %}resolved{% else %}not-resolved{% endif %}">
+                {{ c.Status }}
+            </td>
+            <td>
+                <form method="POST" action="{{ url_for('update_status') }}">
+                    <input type="hidden" name="regno" value="{{ c.RegNo }}">
+                    <select name="status">
+                        <option value="Not Resolved" {% if c.Status == "Not Resolved" %}selected{% endif %}>Not Resolved</option>
+                        <option value="Resolved" {% if c.Status == "Resolved" %}selected{% endif %}>Resolved</option>
+                    </select>
+                    <button type="submit">Update</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="message">📭 No complaints available</div>
+    {% endif %}
+</body>
+</html>
+
+

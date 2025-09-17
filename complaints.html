@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Complaint Portal</title>
+  <style>
+    body {
+      background: url("/static/hostel image.png") no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+    }
+    .form-box {
+      max-width: 600px;
+      margin: auto;
+      background: rgba(173, 196, 237, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      margin: 8px 0;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <h2 style="text-align:center">HCM - Complaint Portal</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <p style="color:green">{{ msg }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+      <input type="text" name="name" placeholder="Full Name" required>
+      <input type="text" name="regno" placeholder="Registration Number" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="room" placeholder="Room Number" required>
+
+      <!-- ✅ Only Block dropdown -->
+      <label for="block">Select Hostel Block:</label>
+      <select name="block" id="block" required>
+        <option value="">-- Select Block --</option>
+        <option value="A">Block A</option>
+        <option value="B">Block B</option>
+        <option value="C">Block C</option>
+        <option value="D">Block D</option>
+        <option value="E">Block E</option>
+        <option value="F">Block F</option>
+        <option value="G">Block G</option>
+        <option value="H">Block H</option>
+      </select>
+
+      <select name="category" required>
+        <option value="">Select Complaint Type</option>
+        <option value="Electricity">Electricity</option>
+        <option value="Water">Water</option>
+        <option value="Internet">Internet</option>
+        <option value="Cleaning">Cleaning</option>
+        <option value="Furniture">Furniture</option>
+        <option value="Security">Security</option>
+        <option value="Others">Others</option>
+      </select>
+
+      <input type="text" name="title" placeholder="Complaint Title" required>
+      <textarea name="description" placeholder="Describe your complaint..." required></textarea>
+
+      <select name="priority" required>
+        <option value="">Select Priority</option>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+
+      <button type="submit">Submit Complaint</button>
+    </form>
+  </div>
+</body>
+</html>
+
+ 
+
+
